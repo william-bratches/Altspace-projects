@@ -24,7 +24,7 @@ function connectAltSpace() {
 		function(connection) {
 		  sceneSync = altspace.utilities.behaviors.SceneSync(connection.instance,
 		    {
-		      instantiators: {'Cube': createCube },
+		      instantiators: {'Cube': loadCubes },
 		      ready: ready
 		    });
 		  sim.scene.addBehavior(sceneSync);
@@ -36,18 +36,8 @@ function main() {
 }
 
 // default example code - gonna leave this in here for now
-function createCube() {
-	//Use MTLLoader for loadTexture, to ensure image is power of 2
-	//else antialiasing won't work (this is a limitation of WebGL)
-	var materialCreator = new THREE.MTLLoader.MaterialCreator();
-	materialCreator.crossOrigin = 'anonymous';
-	var url = 'models/cube/altspace-logo.jpg';
-	//hosted: 'https://sdk.altvr.com/examples/models/share/cube/altspace-logo.jpg';
-	var texture = materialCreator.loadTexture(url);
-	var geometry = new THREE.BoxGeometry(1, 1, 1);
-	var material = new THREE.MeshBasicMaterial({color:'#ffffff', map: texture});
-	var cube = new THREE.Mesh(geometry, material);
-	cube.scale.multiplyScalar(50);
+function loadCubes() {
+	var cube = Modules.ShapeMaker.createCube(100);
 	cube.addBehaviors(
 		altspace.utilities.behaviors.Object3DSync(),
 		altspace.utilities.behaviors.Spin({speed: 0.0005})

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>Synth</title>
+<script src="http://sdk.altvr.com/libs/three.js/r73/build/three.js"></script>
+<script src="../dist/altspace.min.js"></script>
+<script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/MTLLoader.js"></script>
+<!-- <script src="js/modules/init.js"></script>
+<script src="js/modules/shapeMaker.js"></script> -->
+
+
+</head>
+<body>
+</body>
+<script>
+
+
+var sceneSync;
+var sim = altspace.utilities.Simulation();
+var config = {
+	authorId: 'AltspaceVR',
+	appId: 'SpinningCube'
+};
+
+function ready(firstInstance) {
+	if (firstInstance) {
+		sceneSync.instantiate('Cube');
+	}
+}
+
+function connectAltSpace(simulation, sceneSynchronizer, configuration) {
+	altspace.utilities.sync.connect(configuration).then(
+		function(connection) {
+		  sceneSync = altspace.utilities.behaviors.SceneSync(connection.instance,
+		    {
+		      instantiators: {'Cube': createCube },
+		      ready: ready
+		    });
+		  sim.scene.addBehavior(sceneSync);
+	});
+}
+
+// default example code - gonna leave this in here for now
+function createCube() {
+	//Use MTLLoader for loadTexture, to ensure image is power of 2
+	var materialCreator = new THREE.MTLLoader.MaterialCreator();
+	materialCreator.crossOrigin = 'anonymous';
+	var url = 'models/cube/altspace-logo.jpg';
+	//hosted: 'https://sdk.altvr.com/examples/models/share/cube/altspace-logo.jpg';
+	var texture = materialCreator.loadTexture(url);
+	var geometry = new THREE.BoxGeometry(1, 1, 1);
+	var material = new THREE.MeshBasicMaterial({color:'#ffffff', map: texture});
+	var cube = new THREE.Mesh(geometry, material);
+	cube.scale.multiplyScalar(50);
+	cube.addBehaviors(
+		altspace.utilities.behaviors.Object3DSync(),
+		altspace.utilities.behaviors.Spin({speed: 0.0005})
+		// ChangeColor()
+	);
+
+	sim.scene.add(cube);
+	return cube;
+}
+
+function main() {
+	connectAltSpace(sim, sceneSync, config);
+}
+
+
+main();
+</script>
+</html>

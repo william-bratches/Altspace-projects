@@ -37,12 +37,15 @@ function main() {
 
 // default example code - gonna leave this in here for now
 function loadCubes() {
+	var waveFormTypeButtons = new THREE.Group();
 	var sin = Modules.ShapeMaker.createCube(100, "#33CCFF");
 	var saw =  Modules.ShapeMaker.createCube(100, "#D90909");
 	var sync = altspace.utilities.behaviors.Object3DSync()
 	sin.addBehaviors(sync);
 	saw.addBehaviors(sync, saw.translateY(200));
-	sim.scene.add(sin, saw);
+	waveFormTypeButtons.translateX(-400);
+	waveFormTypeButtons.add(sin, saw);
+	sim.scene.add(waveFormTypeButtons);
 }
 
 function ready(firstInstance) {

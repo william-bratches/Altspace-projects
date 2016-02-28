@@ -5,6 +5,7 @@
 <title>SynthBasic</title>
 <script src="http://sdk.altvr.com/libs/three.js/r73/build/three.js"></script>
 <script src="../dist/altspace.min.js"></script>
+<script src="../dist/timbre.js"></script>
 <script src="http://sdk.altvr.com/libs/three.js/r73/examples/js/loaders/MTLLoader.js"></script>
 <script src="js/modules/init.js"></script>
 <script src="js/modules/shapeMaker.js"></script>
@@ -35,7 +36,6 @@ function main() {
 	connectAltSpace();
 }
 
-// default example code - gonna leave this in here for now
 function loadCubes() {
 	var waveFormTypeButtons = new THREE.Group();
 	var sin = Modules.ShapeMaker.createCube(100, "#33CCFF");
@@ -45,6 +45,11 @@ function loadCubes() {
 	saw.addBehaviors(sync, saw.translateY(200));
 	waveFormTypeButtons.translateX(-400);
 	waveFormTypeButtons.add(sin, saw);
+
+	// events - need to abstract later
+	sin.addEventListener('cursordown', function() {
+		T("sin").play();
+	});
 	sim.scene.add(waveFormTypeButtons);
 }
 

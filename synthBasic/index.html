@@ -37,14 +37,12 @@ function main() {
 
 // default example code - gonna leave this in here for now
 function loadCubes() {
-	var cube = Modules.ShapeMaker.createCube(100);
-	cube.addBehaviors(
-		altspace.utilities.behaviors.Object3DSync(),
-		altspace.utilities.behaviors.Spin({speed: 0.0005})
-	);
-
-	sim.scene.add(cube);
-	return cube;
+	var sin = Modules.ShapeMaker.createCube(100, "#33CCFF");
+	var saw =  Modules.ShapeMaker.createCube(100, "#D90909");
+	var sync = altspace.utilities.behaviors.Object3DSync()
+	sin.addBehaviors(sync);
+	saw.addBehaviors(sync, saw.translateY(200));
+	sim.scene.add(sin, saw);
 }
 
 function ready(firstInstance) {
